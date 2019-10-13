@@ -1,7 +1,7 @@
 [![APACHE v2 License](https://img.shields.io/badge/license-apachev2-blue.svg?style=flat)](LICENSE-2.0.txt) 
 [![Latest Release](https://img.shields.io/maven-central/v/com.github.bbottema/rtf-to-html.svg?style=flat)](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.github.bbottema%22%20AND%20a%3A%22rtf-to-html%22) 
 [![Javadocs](http://www.javadoc.io/badge/com.github.bbottema/rtf-to-html.svg)](http://www.javadoc.io/doc/com.github.bbottema/rtf-to-html)
-[![Codacy](https://img.shields.io/codacy/grade/fixme.svg?style=flat)](https://www.codacy.com/app/b-bottema/rtf-to-html)
+[![Codacy](https://img.shields.io/codacy/grade/2686e9520dcc4833b3205d7bc89c3678.svg?style=flat)](https://www.codacy.com/app/b-bottema/rtf-to-html)
 
 # rtf-to-html #
 
