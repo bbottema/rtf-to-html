@@ -1,0 +1,9 @@
+https://github.com/bbottema/rtf-to-html
+
+
+RELEASE NOTES rtf-to-html
+
+
+v1.0.0 (12-October-2019)
+
+- Initial release

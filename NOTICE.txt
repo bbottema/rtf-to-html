@@ -1,0 +1,9 @@
+  =========================================================================
+  ==  NOTICE file for use with the Apache License, Version 2.0           ==
+  =========================================================================
+  
+  rtf-to-html, copyright 2009-2019 Benny Bottema
+  
+  This product uses no commercial products.
+  
+  This product uses no external (Open Source) libraries in the deployed code
