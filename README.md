@@ -40,6 +40,11 @@ String html = converter.rtf2html("RTF text");
 ### Latest Progress ###
 
 
+v1.0.1 (22-October-2019)
+
+- [#1](https://github.com/bbottema/rtf-to-html/issues/1): Missing support for UTF-8's legacy name (cp)65001
+
+
 v1.0.0 (12-October-2019)
 
-- Initial release
+- Initial release, moved from outlook-message-parser
