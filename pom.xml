@@ -10,6 +10,7 @@
 	<version>1.0.1</version>
 	<description>RTF to HTML conversion done right</description>
 	<url>http:///github.com/bbottema/rtf-to-html</url>
+	<inceptionYear>2019</inceptionYear>
 
 	<licenses>
 		<license>
@@ -276,8 +277,8 @@
 						</goals>
 					</execution>
 					<execution>
-						<id>compile-format</id>
-						<phase>compile</phase>
+						<id>before-compile-format</id>
+						<phase>process-sources</phase>
 						<goals>
 							<goal>format</goal>
 						</goals>
