@@ -31,4 +31,12 @@ public class RTF2HTMLConverterJEditorPaneTest {
         
         assertThat(normalizeText(html)).isEqualTo(normalizeText(expectedHtml));
     }
+
+    @Test
+    public void testUnicodeRtfConversion() {
+        String html = RTF2HTMLConverterClassic.INSTANCE.rtf2html(classpathFileToString("test-messages/input/unicode-test.rtf"));
+        String expectedHtml = classpathFileToString("test-messages/output/swing/unicode-test.html");
+
+        assertThat(normalizeText(html)).isEqualTo(normalizeText(expectedHtml));
+    }
 }

@@ -23,12 +23,20 @@ public class RTF2HTMLConverterClassicTest {
         
         assertThat(normalizeText(html)).isEqualTo(normalizeText(expectedHtml));
     }
-    
+
     @Test
-    public void testChineseRtfConversion()  {
+    public void testChineseRtfConversion() {
         String html = RTF2HTMLConverterClassic.INSTANCE.rtf2html(classpathFileToString("test-messages/input/chinese-exotic-test.rtf"));
         String expectedHtml = classpathFileToString("test-messages/output/classic/chinese-exotic-test.html");
-        
+
+        assertThat(normalizeText(html)).isEqualTo(normalizeText(expectedHtml));
+    }
+
+    @Test
+    public void testUnicodeRtfConversion() {
+        String html = RTF2HTMLConverterClassic.INSTANCE.rtf2html(classpathFileToString("test-messages/input/unicode-test.rtf"));
+        String expectedHtml = classpathFileToString("test-messages/output/classic/unicode-test.html");
+
         assertThat(normalizeText(html)).isEqualTo(normalizeText(expectedHtml));
     }
 }
