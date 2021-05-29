@@ -39,4 +39,12 @@ public class RTF2HTMLConverterClassicTest {
 
         assertThat(normalizeText(html)).isEqualTo(normalizeText(expectedHtml));
     }
+    
+    @Test
+    public void testNewlinesConversion() {
+        String html = RTF2HTMLConverterClassic.INSTANCE.rtf2html(classpathFileToString("test-messages/input/newlines-test.rtf"));
+        String expectedHtml = classpathFileToString("test-messages/output/classic/newlines-test.html");
+        
+        assertThat(normalizeText(html)).isEqualTo(normalizeText(expectedHtml));
+    }
 }

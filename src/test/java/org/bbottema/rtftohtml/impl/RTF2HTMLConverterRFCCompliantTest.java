@@ -34,9 +34,17 @@ public class RTF2HTMLConverterRFCCompliantTest {
 
     @Test
     public void testUnicodeRtfConversion() {
-        String html = RTF2HTMLConverterClassic.INSTANCE.rtf2html(classpathFileToString("test-messages/input/unicode-test.rtf"));
+        String html = RTF2HTMLConverterRFCCompliant.INSTANCE.rtf2html(classpathFileToString("test-messages/input/unicode-test.rtf"));
         String expectedHtml = classpathFileToString("test-messages/output/rfcompliant/unicode-test.html");
 
+        assertThat(normalizeText(html)).isEqualTo(normalizeText(expectedHtml));
+    }
+    
+    @Test
+    public void testNewlinesConversion() {
+        String html = RTF2HTMLConverterRFCCompliant.INSTANCE.rtf2html(classpathFileToString("test-messages/input/newlines-test.rtf"));
+        String expectedHtml = classpathFileToString("test-messages/output/rfcompliant/newlines-test.html");
+        
         assertThat(normalizeText(html)).isEqualTo(normalizeText(expectedHtml));
     }
 }
