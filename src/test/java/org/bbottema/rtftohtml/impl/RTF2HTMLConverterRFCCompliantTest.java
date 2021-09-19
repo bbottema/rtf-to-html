@@ -39,4 +39,12 @@ public class RTF2HTMLConverterRFCCompliantTest {
 
         assertThat(normalizeText(html)).isEqualTo(normalizeText(expectedHtml));
     }
+    
+    @Test
+    public void testMixedCharsets() {
+        String html = RTF2HTMLConverterRFCCompliant.INSTANCE.rtf2html(classpathFileToString("test-messages/input/mixed-charsets-test.rtf"));
+        String expectedHtml = classpathFileToString("test-messages/output/rfcompliant/mixed-charsets-test.html");
+
+        assertThat(normalizeText(html)).isEqualTo(normalizeText(expectedHtml));
+    }
 }
