@@ -55,4 +55,12 @@ public class RTF2HTMLConverterRFCCompliantTest {
 
         assertThat(normalizeText(html)).isEqualTo(normalizeText(expectedHtml));
     }
+
+    @Test
+    public void testRussianCharset() {
+        String html = RTF2HTMLConverterRFCCompliant.INSTANCE.rtf2html(classpathFileToString("test-messages/input/russian-test.rtf"));
+        String expectedHtml = classpathFileToString("test-messages/output/rfcompliant/russian-test.html");
+
+        assertThat(normalizeText(html)).isEqualTo(normalizeText(expectedHtml));
+    }
 }

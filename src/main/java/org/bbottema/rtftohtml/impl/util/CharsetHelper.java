@@ -67,7 +67,7 @@ public class CharsetHelper {
 			case 186:
 				return Charset.forName("Windows-1256");
 			case 204:
-				return Charset.forName("ISO-8859-5");
+				return Charset.forName("Windows-1251");
 			case 222:
 				return Charset.forName("Windows-1251");
 			case 238:
