@@ -47,4 +47,12 @@ public class RTF2HTMLConverterRFCCompliantTest {
 
         assertThat(normalizeText(html)).isEqualTo(normalizeText(expectedHtml));
     }
+    
+    @Test
+    public void testHebrewCharset() {
+        String html = RTF2HTMLConverterRFCCompliant.INSTANCE.rtf2html(classpathFileToString("test-messages/input/hebrew-test.rtf"));
+        String expectedHtml = classpathFileToString("test-messages/output/rfcompliant/hebrew-test.html");
+
+        assertThat(normalizeText(html)).isEqualTo(normalizeText(expectedHtml));
+    }
 }

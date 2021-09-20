@@ -30,6 +30,7 @@ public class CharsetHelper {
 	@Nullable
 	public static Charset rtfCharset(int rtfCharsetNumber) {
 		// RTF specific table lifted from wikipedia: https://en.wikipedia.org/wiki/Rich_Text_Format
+		// Augmented by info from here http://ftp.artifax.net/ArtRep/2.0/Help/rtf.htm
 		switch(rtfCharsetNumber) {
 			case 0:
 				return Charset.forName("Windows-1252");
@@ -50,20 +51,29 @@ public class CharsetHelper {
 				return Charset.forName("Windows-950");
 			case 161:
 				return Charset.forName("Windows-1253");
+			case 162:
+				return Charset.forName("cp857");
 			case 163:
 				return Charset.forName("Windows-1254");
-			case 177:
-				return Charset.forName("Windows-1258");
-			case 178:
+			case 177: // HEBREW_CHARSET
+			case 181: // HEBREWUSER_CHARSET
+				// Can't find different charsets for these different types of hebrew
 				return Charset.forName("Windows-1255");
+			case 178: // ARABICSIMPLIFIED_CHARSET
+			case 179: // ARABICTRADITIONAL_CHARSET
+			case 180: // ARABICUSER_CHARSET
+				// Can't find different charsets for these different types of arabic
+				return Charset.forName("Windows-1256");
 			case 186:
 				return Charset.forName("Windows-1256");
 			case 204:
-				return Charset.forName("Windows-1257");
+				return Charset.forName("ISO-8859-5");
 			case 222:
 				return Charset.forName("Windows-1251");
 			case 238:
-				return Charset.forName("Windows-1250");
+				return Charset.forName("Windows-1257");
+			case 254:
+				return Charset.forName("CP437");
 			case 255:
 				// "Default OEM code page for system locale"
 				// This will likely not work in practise. 
