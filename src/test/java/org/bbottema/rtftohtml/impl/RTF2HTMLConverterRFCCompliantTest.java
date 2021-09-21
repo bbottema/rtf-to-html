@@ -41,6 +41,30 @@ public class RTF2HTMLConverterRFCCompliantTest {
     }
     
     @Test
+    public void testMixedCharsets() {
+        String html = RTF2HTMLConverterRFCCompliant.INSTANCE.rtf2html(classpathFileToString("test-messages/input/mixed-charsets-test.rtf"));
+        String expectedHtml = classpathFileToString("test-messages/output/rfcompliant/mixed-charsets-test.html");
+        
+        assertThat(normalizeText(html)).isEqualTo(normalizeText(expectedHtml));
+    }
+    
+    @Test
+    public void testHebrewCharset() {
+        String html = RTF2HTMLConverterRFCCompliant.INSTANCE.rtf2html(classpathFileToString("test-messages/input/hebrew-test.rtf"));
+        String expectedHtml = classpathFileToString("test-messages/output/rfcompliant/hebrew-test.html");
+        
+        assertThat(normalizeText(html)).isEqualTo(normalizeText(expectedHtml));
+    }
+    
+    @Test
+    public void testRussianCharset() {
+        String html = RTF2HTMLConverterRFCCompliant.INSTANCE.rtf2html(classpathFileToString("test-messages/input/russian-test.rtf"));
+        String expectedHtml = classpathFileToString("test-messages/output/rfcompliant/russian-test.html");
+        
+        assertThat(normalizeText(html)).isEqualTo(normalizeText(expectedHtml));
+    }
+    
+    @Test
     public void testNewlinesConversion() {
         String html = RTF2HTMLConverterRFCCompliant.INSTANCE.rtf2html(classpathFileToString("test-messages/input/newlines-test.rtf"));
         String expectedHtml = classpathFileToString("test-messages/output/rfcompliant/newlines-test.html");
