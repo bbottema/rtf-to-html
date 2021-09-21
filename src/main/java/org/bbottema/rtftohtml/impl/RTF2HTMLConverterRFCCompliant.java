@@ -5,7 +5,9 @@ import org.bbottema.rtftohtml.impl.util.CharsetHelper;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.charset.Charset;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,6 +34,7 @@ public class RTF2HTMLConverterRFCCompliant implements RTF2HTMLConverter {
     
     @NotNull
     public String rtf2html(@NotNull String rtf) {
+        Map<Integer, FontTableEntry> fontTable = new HashMap<>();
         Charset charset = WINDOWS_CHARSET;
 
         // RTF processing requires stack holding current settings, each group adds new settings to stack
@@ -70,7 +73,16 @@ public class RTF2HTMLConverterRFCCompliant implements RTF2HTMLConverter {
                         charIndex += 4;
                         encodedCharMatcher.region(charIndex, length);
                     }
-                    String decoded = hexToString(encodedSequence.toString(), charset);
+                    
+                    Charset effectiveCharset = charset;
+                    if(currentGroup.fontTableIndex != null) {
+                        FontTableEntry entry = fontTable.get(currentGroup.fontTableIndex);
+                        if(entry != null && entry.charset != null) {
+                            effectiveCharset = entry.charset;
+                        }
+                    }
+                    
+                    String decoded = hexToString(encodedSequence.toString(), effectiveCharset);
                     append(result, decoded, currentGroup);
                     continue;
                 }
@@ -115,6 +127,23 @@ public class RTF2HTMLConverterRFCCompliant implements RTF2HTMLConverter {
                     case "colortbl":
                         currentGroup.ignore = true;
                         break;
+                    case "f":
+                        // font table index. Might be a new one, or an existing one
+                        currentGroup.fontTableIndex = controlNumber;
+                        break;
+                    case "fcharset":
+                        if(controlNumber != null && currentGroup.fontTableIndex != null) {
+                            Charset possibleCharset = CharsetHelper.rtfCharset(controlNumber);
+                            if(possibleCharset != null) {
+                                FontTableEntry entry = fontTable.get(currentGroup.fontTableIndex);
+                                if(entry == null) {
+                                    entry = new FontTableEntry();
+                                    fontTable.put(currentGroup.fontTableIndex, entry);
+                                }
+                                entry.charset = possibleCharset;
+                            }
+                        }
+                        break;
                     case "uc": // This denotes a number of characters to skip after unicode symbols
                         currentGroup.unicodeCharLength = controlNumber == null ? 1 : controlNumber;
                         break;
@@ -152,13 +181,19 @@ public class RTF2HTMLConverterRFCCompliant implements RTF2HTMLConverter {
         boolean ignore = false;
         int unicodeCharLength = 1;
         boolean htmlRtf = false;
+        Integer fontTableIndex = null;
 
         Group copy() {
             Group newGroup = new Group();
             newGroup.ignore = this.ignore;
             newGroup.unicodeCharLength = this.unicodeCharLength;
             newGroup.htmlRtf = this.htmlRtf;
+            // Don't inherit fontTableIndex from parent group. 
             return newGroup;
         }
+    }
+    
+    private static class FontTableEntry {
+        Charset charset = null;
     }
 }
