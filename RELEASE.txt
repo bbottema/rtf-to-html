@@ -4,6 +4,11 @@ https://github.com/bbottema/rtf-to-html
 RELEASE NOTES rtf-to-html
 
 
+v1.2.0 (25-May-2024)
+
+- #13: Charset should be determined based on the RTF's ansicpg control word
+
+
 v1.0.1 (22-October-2019)
 
 - #1: Missing support for UTF-8's legacy name (cp)65001
