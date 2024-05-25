@@ -2,6 +2,7 @@ package org.bbottema.rtftohtml.impl;
 
 import org.bbottema.rtftohtml.RTF2HTMLConverter;
 import org.bbottema.rtftohtml.impl.util.CharsetHelper;
+import org.bbottema.rtftohtml.impl.util.CodePage;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.charset.Charset;
@@ -9,7 +10,6 @@ import java.util.regex.Matcher;
 
 import static java.util.regex.Pattern.compile;
 import static org.bbottema.rtftohtml.impl.util.ByteUtil.hexToString;
-import static org.bbottema.rtftohtml.impl.util.CharsetHelper.WINDOWS_CHARSET;
 
 /**
  * Simplistic best guess regex-based approach that always embeds the result in a {@code <html>} tag (if not present) with basic reading setting.
@@ -35,7 +35,7 @@ public class RTF2HTMLConverterClassic implements RTF2HTMLConverter {
         final Charset charset = extractCodepage(rtf);
         String plain = fetchHtmlSection(rtf);
         plain = replaceSpecialSequences(plain); // first step, remove known control words or else we'll match single escape hex values in the next step
-        plain = replaceHexSequences(plain, "(?:\\\\f\\d(?:\\\\'..)+)", WINDOWS_CHARSET); // match all header control values with default charset
+        plain = replaceHexSequences(plain, "(?:\\\\f\\d(?:\\\\'..)+)", CodePage.WINDOWS_1252.getCharset()); // match all header control values with default charset
         plain = replaceHexSequences(plain, "(?:\\\\'..)+", charset); // match all remaining escaped hex values as encoded text (which might be DBCS like CP936)
         plain = cleanupRemainingSequences(plain);
         plain = replaceLineBreaks(plain);
@@ -54,7 +54,7 @@ public class RTF2HTMLConverterClassic implements RTF2HTMLConverter {
         if (codePageMatcher.find()) {
             return CharsetHelper.findCharsetForCodePage(codePageMatcher.group("codePage"));
         } else {
-            return WINDOWS_CHARSET; // fallback
+            return CodePage.WINDOWS_1252.getCharset(); // fallback
         }
     }
     

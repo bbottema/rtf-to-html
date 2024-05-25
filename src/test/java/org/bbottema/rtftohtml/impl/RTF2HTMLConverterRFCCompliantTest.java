@@ -33,7 +33,7 @@ public class RTF2HTMLConverterRFCCompliantTest {
     }
 
     @Test
-    public void testChineseRtfConversion_WithCharsetOverrideFromUsedActuallyFont() {
+    public void testChineseRtfConversion_WithCharsetOverrideFromUsedFont() {
         String html = RTF2HTMLConverterRFCCompliant.INSTANCE.rtf2html(classpathFileToString("test-messages/input/chinese-fontbased-charset-override.rtf"));
         String expectedHtml = classpathFileToString("test-messages/output/rfcompliant/chinese-fontbased-charset-override-test.html");
 

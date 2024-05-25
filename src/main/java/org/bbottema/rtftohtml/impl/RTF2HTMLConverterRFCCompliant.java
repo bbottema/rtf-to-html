@@ -2,6 +2,7 @@ package org.bbottema.rtftohtml.impl;
 
 import org.bbottema.rtftohtml.RTF2HTMLConverter;
 import org.bbottema.rtftohtml.impl.util.CharsetHelper;
+import org.bbottema.rtftohtml.impl.util.CodePage;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.charset.Charset;
@@ -9,7 +10,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static java.util.Objects.requireNonNull;
 import static org.bbottema.rtftohtml.impl.util.ByteUtil.hexToString;
@@ -25,9 +25,6 @@ import static org.bbottema.rtftohtml.impl.util.ByteUtil.hexToString;
 public class RTF2HTMLConverterRFCCompliant implements RTF2HTMLConverter {
 
     public static final RTF2HTMLConverter INSTANCE = new RTF2HTMLConverterRFCCompliant();
-
-    private static final Pattern CONTROL_WORD = Pattern.compile("\\\\(([^a-zA-Z])|(([a-zA-Z]+)(-?[\\d]*) ?))");
-    private static final Pattern ENCODED_CHARACTER = Pattern.compile("\\\\'([0-9a-fA-F]{2})");
 
     private RTF2HTMLConverterRFCCompliant() {}
 
@@ -131,7 +128,7 @@ public class RTF2HTMLConverterRFCCompliant implements RTF2HTMLConverter {
                         break;
                     case "fcharset":
                         if (controlNumber != null && currentGroup.fontTableIndex != null) {
-                            Charset possibleCharset = CharsetHelper.rtfCharset(controlNumber);
+                            Charset possibleCharset = CodePage.getCharsetByCodePage(controlNumber);
                             if (possibleCharset != null) {
                                 FontTableEntry entry = fontTable.get(currentGroup.fontTableIndex);
                                 if (entry == null) {
