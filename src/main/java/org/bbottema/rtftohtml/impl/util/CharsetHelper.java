@@ -15,7 +15,7 @@ public class CharsetHelper {
 
     private static final String[] CHARSET_PREFIXES = {"", "cp", "iso-", "ibm", "x-windows-", "ms"};
     public static final Charset WINDOWS_CHARSET = Charset.forName("windows-1252"); // forName("CP1252") would also work
-    private static final Pattern CHINESE_FONT_PATTERN = Pattern.compile("Microsoft YaHei UI|SimSun|NSimSun|FangSong|KaiTi|SimHei");
+    private static final Pattern NON_LATIN_FONT_PATTERN = Pattern.compile("Microsoft YaHei UI|SimSun|NSimSun|FangSong|KaiTi|SimHei|Symbol|Wingdings|Webdings|Arial Cyr|MS Mincho|MS Gothic");
 
     public static Charset findCharsetForCodePage(String rtfCodePage) {
         return rtfCodePage.equals("65001") || rtfCodePage.equalsIgnoreCase("cp65001") ? StandardCharsets.UTF_8 : detectCharset(rtfCodePage);
@@ -35,12 +35,31 @@ public class CharsetHelper {
     public static Charset detectCharsetFromRtfContent(String rtfContent) {
         Charset charset = CharsetHelper.detectCharsetFromAnsicpg(rtfContent);
         if (charset != null && charset.name().equals("windows-1252")) {
-            Matcher fontMatcher = CHINESE_FONT_PATTERN.matcher(rtfContent);
+            Matcher fontMatcher = NON_LATIN_FONT_PATTERN.matcher(rtfContent);
             if (fontMatcher.find()) {
-                return Charset.forName("GB18030");
+                return detectCharsetBasedOnFont(fontMatcher.group());
             }
         }
         return charset != null ? charset : WINDOWS_CHARSET; // Default to windows-1252 if not found
+    }
+
+    private static Charset detectCharsetBasedOnFont(String fontName) {
+        switch (fontName) {
+            case "Microsoft YaHei UI":
+            case "SimSun":
+            case "NSimSun":
+            case "FangSong":
+            case "KaiTi":
+            case "SimHei":
+                return Charset.forName("GB18030");
+            case "Arial Cyr":
+                return Charset.forName("windows-1251"); // Russian
+            case "MS Mincho":
+            case "MS Gothic":
+                return Charset.forName("windows-932"); // Japanese
+            default:
+                return WINDOWS_CHARSET;
+        }
     }
 
     public static Charset detectCharsetFromAnsicpg(String rtfContent) {
@@ -244,4 +263,5 @@ public class CharsetHelper {
                 return null;
         }
     }
+
 }
