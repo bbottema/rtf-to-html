@@ -24,14 +24,14 @@ import static org.bbottema.rtftohtml.impl.util.CharsetHelper.WINDOWS_CHARSET;
  * The resulting source and rendered result is on par with software such as Outlook.
  */
 public class RTF2HTMLConverterRFCCompliant implements RTF2HTMLConverter {
-    
+
     public static final RTF2HTMLConverter INSTANCE = new RTF2HTMLConverterRFCCompliant();
-    
-    private static Pattern CONTROL_WORD = Pattern.compile("\\\\(([^a-zA-Z])|(([a-zA-Z]+)(-?[\\d]*) ?))");
-    private static Pattern ENCODED_CHARACTER = Pattern.compile("\\\\'([0-9a-fA-F]{2})");
-    
+
+    private static final Pattern CONTROL_WORD = Pattern.compile("\\\\(([^a-zA-Z])|(([a-zA-Z]+)(-?[\\d]*) ?))");
+    private static final Pattern ENCODED_CHARACTER = Pattern.compile("\\\\'([0-9a-fA-F]{2})");
+
     private RTF2HTMLConverterRFCCompliant() {}
-    
+
     @NotNull
     public String rtf2html(@NotNull String rtf) {
         Map<Integer, FontTableEntry> fontTable = new HashMap<>();
@@ -63,7 +63,6 @@ public class RTF2HTMLConverterRFCCompliant implements RTF2HTMLConverter {
                 }
                 charIndex++;
             } else if (c == '\\') {
-
                 // matching ansi-encoded sequences  like \'f5\'93
                 encodedCharMatcher.region(charIndex, length);
                 if (encodedCharMatcher.lookingAt()) {
@@ -73,7 +72,7 @@ public class RTF2HTMLConverterRFCCompliant implements RTF2HTMLConverter {
                         charIndex += 4;
                         encodedCharMatcher.region(charIndex, length);
                     }
-                    
+
                     Charset effectiveCharset = charset;
                     if(currentGroup.fontTableIndex != null) {
                         FontTableEntry entry = fontTable.get(currentGroup.fontTableIndex);
@@ -83,7 +82,7 @@ public class RTF2HTMLConverterRFCCompliant implements RTF2HTMLConverter {
                     }
                     
                     String decoded = hexToString(encodedSequence.toString(), effectiveCharset);
-                    append(result, decoded, currentGroup);
+                    appendIfNotIgnoredGroup(result, decoded, currentGroup);
                     continue;
                 }
 
@@ -99,7 +98,7 @@ public class RTF2HTMLConverterRFCCompliant implements RTF2HTMLConverter {
                 Integer controlNumber = null;
                 String controlWord = controlWordMatcher.group(2); // group(2) matches control symbol
                 if (controlWord == null) {
-                    controlWord = controlWordMatcher.group(4); // group(2) matches control word
+                    controlWord = controlWordMatcher.group(4); // group(4) matches control word
                     String controlNumberString = controlWordMatcher.group(5);
                     if (!"".equals(controlNumberString)) {
                         controlNumber = Integer.valueOf(controlNumberString);
@@ -109,10 +108,10 @@ public class RTF2HTMLConverterRFCCompliant implements RTF2HTMLConverter {
 
                 switch (controlWord) {
                     case "par":
-                        append(result, "\n", currentGroup);
+                        appendIfNotIgnoredGroup(result, "\n", currentGroup);
                         break;
                     case "tab":
-                        append(result, "\t", currentGroup);
+                        appendIfNotIgnoredGroup(result, "\t", currentGroup);
                         break;
                     case "htmlrtf":
                         //htmlrtf starts ignored text area, htmlrtf0 ends it
@@ -132,11 +131,11 @@ public class RTF2HTMLConverterRFCCompliant implements RTF2HTMLConverter {
                         currentGroup.fontTableIndex = controlNumber;
                         break;
                     case "fcharset":
-                        if(controlNumber != null && currentGroup.fontTableIndex != null) {
+                        if (controlNumber != null && currentGroup.fontTableIndex != null) {
                             Charset possibleCharset = CharsetHelper.rtfCharset(controlNumber);
-                            if(possibleCharset != null) {
+                            if (possibleCharset != null) {
                                 FontTableEntry entry = fontTable.get(currentGroup.fontTableIndex);
-                                if(entry == null) {
+                                if (entry == null) {
                                     entry = new FontTableEntry();
                                     fontTable.put(currentGroup.fontTableIndex, entry);
                                 }
@@ -144,26 +143,28 @@ public class RTF2HTMLConverterRFCCompliant implements RTF2HTMLConverter {
                             }
                         }
                         break;
-                    case "uc": // This denotes a number of characters to skip after unicode symbols
+                    case "uc":
+                        // This denotes a number of characters to skip after unicode symbols
                         currentGroup.unicodeCharLength = controlNumber == null ? 1 : controlNumber;
                         break;
-                    case "u": // Unicode symbols
+                    case "u":
+                        // Unicode symbols
                         if (controlNumber != null) {
                             char unicodeSymbol = (char) controlNumber.intValue();
-                            append(result, Character.toString(unicodeSymbol), currentGroup);
+                            appendIfNotIgnoredGroup(result, Character.toString(unicodeSymbol), currentGroup);
                             charIndex += currentGroup.unicodeCharLength;
                         }
                         break;
                     case "{":  // Escaped characters
                     case "}":
                     case "\\":
-                        append(result, controlWord, currentGroup);
+                        appendIfNotIgnoredGroup(result, controlWord, currentGroup);
                         break;
                     default:
                 }
 
             } else {
-                append(result, c + "", currentGroup);
+                appendIfNotIgnoredGroup(result, c + "", currentGroup);
                 charIndex++;
             }
         }
@@ -171,7 +172,7 @@ public class RTF2HTMLConverterRFCCompliant implements RTF2HTMLConverter {
     }
 
 
-    private void append(StringBuilder result, String symbol, Group group) {
+    private void appendIfNotIgnoredGroup(StringBuilder result, String symbol, Group group) {
         if (!group.ignore && !group.htmlRtf) {
             result.append(symbol);
         }
@@ -188,11 +189,11 @@ public class RTF2HTMLConverterRFCCompliant implements RTF2HTMLConverter {
             newGroup.ignore = this.ignore;
             newGroup.unicodeCharLength = this.unicodeCharLength;
             newGroup.htmlRtf = this.htmlRtf;
-            // Don't inherit fontTableIndex from parent group. 
+            // Don't inherit fontTableIndex from parent group.
             return newGroup;
         }
     }
-    
+
     private static class FontTableEntry {
         Charset charset = null;
     }
