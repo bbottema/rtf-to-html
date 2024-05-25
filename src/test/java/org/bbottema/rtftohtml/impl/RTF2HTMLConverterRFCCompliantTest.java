@@ -23,12 +23,20 @@ public class RTF2HTMLConverterRFCCompliantTest {
         
         assertThat(normalizeText(html)).isEqualTo(normalizeText(expectedHtml));
     }
-    
+
     @Test
     public void testChineseRtfConversion()  {
         String html = RTF2HTMLConverterRFCCompliant.INSTANCE.rtf2html(classpathFileToString("test-messages/input/chinese-exotic-test.rtf"));
         String expectedHtml = classpathFileToString("test-messages/output/rfcompliant/chinese-exotic-test.html");
-        
+
+        assertThat(normalizeText(html)).isEqualTo(normalizeText(expectedHtml));
+    }
+
+    @Test
+    public void testChineseRtfConversion_WithCharsetOverrideFromUsedActuallyFont() {
+        String html = RTF2HTMLConverterRFCCompliant.INSTANCE.rtf2html(classpathFileToString("test-messages/input/chinese-fontbased-charset-override.rtf"));
+        String expectedHtml = classpathFileToString("test-messages/output/rfcompliant/chinese-fontbased-charset-override-test.html");
+
         assertThat(normalizeText(html)).isEqualTo(normalizeText(expectedHtml));
     }
 

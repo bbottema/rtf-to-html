@@ -13,7 +13,6 @@ import java.util.regex.Pattern;
 
 import static java.util.Objects.requireNonNull;
 import static org.bbottema.rtftohtml.impl.util.ByteUtil.hexToString;
-import static org.bbottema.rtftohtml.impl.util.CharsetHelper.WINDOWS_CHARSET;
 
 /**
  * The last and most comprehensive converter that follows the RTF RFC and produces the most correct outcome.
@@ -35,7 +34,7 @@ public class RTF2HTMLConverterRFCCompliant implements RTF2HTMLConverter {
     @NotNull
     public String rtf2html(@NotNull String rtf) {
         Map<Integer, FontTableEntry> fontTable = new HashMap<>();
-        Charset charset = WINDOWS_CHARSET;
+        Charset charset = CharsetHelper.detectCharsetFromRtfContent(rtf);
 
         // RTF processing requires stack holding current settings, each group adds new settings to stack
         LinkedList<Group> groupStack = new LinkedList<>();
@@ -63,7 +62,7 @@ public class RTF2HTMLConverterRFCCompliant implements RTF2HTMLConverter {
                 }
                 charIndex++;
             } else if (c == '\\') {
-                // matching ansi-encoded sequences  like \'f5\'93
+                // matching ansi-encoded sequences like \'f5\'93
                 encodedCharMatcher.region(charIndex, length);
                 if (encodedCharMatcher.lookingAt()) {
                     StringBuilder encodedSequence = new StringBuilder();
@@ -74,13 +73,13 @@ public class RTF2HTMLConverterRFCCompliant implements RTF2HTMLConverter {
                     }
 
                     Charset effectiveCharset = charset;
-                    if(currentGroup.fontTableIndex != null) {
+                    if (currentGroup.fontTableIndex != null) {
                         FontTableEntry entry = fontTable.get(currentGroup.fontTableIndex);
-                        if(entry != null && entry.charset != null) {
+                        if (entry != null && entry.charset != null) {
                             effectiveCharset = entry.charset;
                         }
                     }
-                    
+
                     String decoded = hexToString(encodedSequence.toString(), effectiveCharset);
                     appendIfNotIgnoredGroup(result, decoded, currentGroup);
                     continue;
@@ -94,7 +93,7 @@ public class RTF2HTMLConverterRFCCompliant implements RTF2HTMLConverter {
                 }
 
                 //checking for control symbol or control word
-                //control word can have optional number following it and the option space as well
+                //control word can have optional number following it and the optional space as well
                 Integer controlNumber = null;
                 String controlWord = controlWordMatcher.group(2); // group(2) matches control symbol
                 if (controlWord == null) {
@@ -120,9 +119,9 @@ public class RTF2HTMLConverterRFCCompliant implements RTF2HTMLConverter {
                         break;
                     case "ansicpg":
                         //charset definition is important for decoding ansi encoded values
-                        charset = CharsetHelper.findCharset(requireNonNull(controlNumber).toString());
+                        charset = CharsetHelper.findCharsetForCodePage(requireNonNull(controlNumber).toString());
                         break;
-                    case "fonttbl": // skipping these groups contents - these are font and color settings
+                    case "fonttbl": // skipping these groups' contents - these are font and color settings
                     case "colortbl":
                         currentGroup.ignore = true;
                         break;
@@ -170,7 +169,6 @@ public class RTF2HTMLConverterRFCCompliant implements RTF2HTMLConverter {
         }
         return result.toString();
     }
-
 
     private void appendIfNotIgnoredGroup(StringBuilder result, String symbol, Group group) {
         if (!group.ignore && !group.htmlRtf) {

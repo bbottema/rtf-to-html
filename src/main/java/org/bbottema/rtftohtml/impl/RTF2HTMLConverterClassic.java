@@ -52,7 +52,7 @@ public class RTF2HTMLConverterClassic implements RTF2HTMLConverter {
     private Charset extractCodepage(String rtf) {
         Matcher codePageMatcher = compile("(?:\\\\ansicpg(?<codePage>.+?)\\\\)+").matcher(rtf);
         if (codePageMatcher.find()) {
-            return CharsetHelper.findCharset(codePageMatcher.group("codePage"));
+            return CharsetHelper.findCharsetForCodePage(codePageMatcher.group("codePage"));
         } else {
             return WINDOWS_CHARSET; // fallback
         }
