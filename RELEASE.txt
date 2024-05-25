@@ -4,7 +4,7 @@ https://github.com/bbottema/rtf-to-html
 RELEASE NOTES rtf-to-html
 
 
-v1.2.0 (25-May-2024)
+v1.1.0 (25-May-2024)
 
 - #13: Charset should be determined based on the RTF's ansicpg control word
 
