@@ -1,6 +1,6 @@
 package org.bbottema.rtftohtml.impl;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.bbottema.rtftohtml.impl.TestUtils.classpathFileToString;
