@@ -79,4 +79,12 @@ public class RTF2HTMLConverterRFCCompliantTest {
         
         assertThat(normalizeText(html)).isEqualTo(normalizeText(expectedHtml));
     }
+
+    @Test
+    public void testBulletNumbers() {
+        String html = RTF2HTMLConverterRFCCompliant.INSTANCE.rtf2html(classpathFileToString("test-messages/input/bulletnumber-test.rtf"));
+        String expectedHtml = classpathFileToString("test-messages/output/rfcompliant/bulletnumber-test.html");
+
+        assertThat(normalizeText(html)).isEqualTo(normalizeText(expectedHtml));
+    }
 }
