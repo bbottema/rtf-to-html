@@ -156,6 +156,9 @@ public class RTF2HTMLConverterRFCCompliant implements RTF2HTMLConverter {
                     case "\\":
                         appendIfNotIgnoredGroup(result, controlWord, currentGroup);
                         break;
+                    case "pntext":
+                        currentGroup.ignore = true;
+                        break;
                     default:
                 }
 
