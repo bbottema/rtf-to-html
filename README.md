@@ -13,7 +13,7 @@ rtf-to-html is available in Maven Central:
 <dependency>
     <groupId>com.github.bbottema</groupId>
     <artifactId>rtf-to-html</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
 </dependency>
 ```
 
@@ -40,9 +40,10 @@ String html = converter.rtf2html("RTF text");
 ### Latest Progress ###
 
 
-v1.1.0 (25-May-2024)
+v1.1.0 - v1.1.1
 
-- [#13](https://github.com/bbottema/rtf-to-html/issues/13): Charset should be determined based on the RTF's ansicpg control word
+- 08-June-2024: [#14](https://github.com/bbottema/rtf-to-html/issues/14): Bullet numbers in list items have double numbers
+- 25-May-2024: [#13](https://github.com/bbottema/rtf-to-html/issues/13): Charset should be determined based on the RTF's ansicpg control word
 
 
 v1.0.1 (22-October-2019)
