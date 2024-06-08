@@ -12,7 +12,7 @@
 	<artifactId>rtf-to-html</artifactId>
 	<packaging>jar</packaging>
 	<name>rtf-to-html</name>
-	<version>1.1.0</version>
+	<version>1.1.1</version>
 	<description>RTF to HTML conversion done right</description>
 	<url>http:///github.com/bbottema/rtf-to-html</url>
 	<inceptionYear>2019</inceptionYear>
