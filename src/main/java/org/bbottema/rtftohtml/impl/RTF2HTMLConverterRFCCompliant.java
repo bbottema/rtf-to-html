@@ -103,6 +103,7 @@ public class RTF2HTMLConverterRFCCompliant implements RTF2HTMLConverter {
                 charIndex += controlWordMatcher.end() - controlWordMatcher.start();
 
                 switch (controlWord) {
+                    case "line":
                     case "par":
                         appendIfNotIgnoredGroup(result, "\n", currentGroup);
                         break;

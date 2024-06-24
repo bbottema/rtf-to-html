@@ -1,4 +1,7 @@
+.classpath
 /.idea
 /javadoc
+.project
+/.settings/*
 /target
 *.iml
