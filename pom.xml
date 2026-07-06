@@ -12,7 +12,7 @@
 	<artifactId>rtf-to-html</artifactId>
 	<packaging>jar</packaging>
 	<name>rtf-to-html</name>
-	<version>1.1.1</version>
+	<version>2.0.0</version>
 	<description>General-purpose RTF parsing and HTML conversion with Outlook encapsulation support</description>
 	<url>http:///github.com/bbottema/rtf-to-html</url>
 	<inceptionYear>2019</inceptionYear>
