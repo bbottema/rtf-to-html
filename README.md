@@ -70,6 +70,8 @@ MS-OXRTFEX, parser, and renderer rules used by the converters.
 
 Unreleased
 
+- 06-July-2026: [#15](https://github.com/bbottema/rtf-to-html/issues/15): Published a valid
+  JPMS automatic module name, `org.bbottema.rtftohtml`, for `module-info.java` consumers.
 - 06-July-2026: Breaking overhaul: replaced the old `RTF2HTMLConverter` API with `RtfToHtmlConverter`,
   `StandardRtfToHtmlConverter`, and `OutlookRtfToHtmlConverter`.
 - 06-July-2026: Added a public `RtfParser` and document model for groups, control words, control

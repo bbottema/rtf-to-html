@@ -17,6 +17,10 @@
 	<url>http:///github.com/bbottema/rtf-to-html</url>
 	<inceptionYear>2019</inceptionYear>
 
+	<properties>
+		<automaticModuleName>org.bbottema.rtftohtml</automaticModuleName>
+	</properties>
+
 	<scm>
 		<connection>scm:git:git://github.com/bbottema/rtf-to-html.git</connection>
 		<developerConnection>scm:git:git@github.com:bbottema/rtf-to-html.git</developerConnection>
