@@ -3,11 +3,18 @@
 [![Javadocs](http://www.javadoc.io/badge/com.github.bbottema/rtf-to-html.svg)](http://www.javadoc.io/doc/com.github.bbottema/rtf-to-html)
 [![Codacy](https://img.shields.io/codacy/grade/2686e9520dcc4833b3205d7bc89c3678.svg?style=flat)](https://www.codacy.com/app/b-bottema/rtf-to-html)
 
-# rtf-to-html #
+# rtf-to-html
 
-The world's only RFC compliant RTF to HTML parser.
+General-purpose RTF parsing and HTML conversion for Java, with first-class Outlook/Exchange
+encapsulated RTF support.
 
-rtf-to-html is available in Maven Central:
+This library started life inside
+[outlook-message-parser](https://github.com/bbottema/outlook-message-parser), where the main problem is
+turning Outlook/Exchange RTF body content into usable HTML. The core is now a normal RTF parser and
+renderer; Outlook handling is an extension on top of that core.
+
+rtf-to-html is available in Maven Central. The current branch contains unreleased breaking API changes;
+the latest published release is still:
 
 ```
 <dependency>
@@ -19,25 +26,62 @@ rtf-to-html is available in Maven Central:
 
 ## Usage
 
-There are **three versions** of RTF to HTML for you to discover:
+There are several converters available:
 
-* RTF2HTMLConverterJEditorPane: A converter that invokes Swing's native RTF support
-* RTF2HTMLConverterClassic: The orignal custom (regex-based) built converter with reasonable results
-* RTF2HTMLConverterJEditorPane: The improved RFC-compliant parser with the most correct outcome
+* `StandardRtfToHtmlConverter`: the general-purpose RTF-to-HTML converter
+* `OutlookRtfToHtmlConverter`: the Outlook/MS-OXRTFEX-aware converter used by `outlook-message-parser`
+* `legacy.ClassicRtfToHtmlConverter`: the inherited regex-based converter, kept for comparison
+* `legacy.JEditorPaneRtfToHtmlConverter`: Swing's built-in limited RTF parser, kept for comparison
 
 ```java
-RTF2HTMLConverter converter = RTF2HTMLConverterJEditorPane.INSTANCE;
-RTF2HTMLConverter converter = RTF2HTMLConverterClassic.INSTANCE;
-RTF2HTMLConverter converter = RTF2HTMLConverterRFCCompliant.INSTANCE;
+RtfToHtmlConverter converter = StandardRtfToHtmlConverter.INSTANCE;
 
-String html = converter.rtf2html("RTF text");
+String html = converter.toHtml(rtf);
 ```
+
+For Outlook `.msg` bodies, callers that receive raw RTF bytes, or callers that want to extract embedded
+images:
+
+```java
+RtfToHtmlConverter converter = new OutlookRtfToHtmlConverter(RtfToHtmlOptions.builder()
+    .imageHandler(image -> saveImageAndReturnSrc(image))
+    .build());
+
+String html = converter.toHtml(rtfBytes);
+```
+
+The parser is also public:
+
+```java
+RtfDocument document = new RtfParser().parse(rtfBytes);
+```
+
+Outlook `\fromhtml` RTF extracts the original HTML. Outlook `\fromtext` RTF returns escaped HTML using
+a `<pre style="white-space:pre-wrap">` wrapper so plain-text email line breaks survive.
+
+See [docs/rtf-architecture-and-standards.md](docs/rtf-architecture-and-standards.md) for the RTF,
+MS-OXRTFEX, parser, and renderer rules used by the converters.
 
 
 ---
 
 
 ### Latest Progress ###
+
+Unreleased
+
+- 06-July-2026: Breaking overhaul: replaced the old `RTF2HTMLConverter` API with `RtfToHtmlConverter`,
+  `StandardRtfToHtmlConverter`, and `OutlookRtfToHtmlConverter`.
+- 06-July-2026: Added a public `RtfParser` and document model for groups, control words, control
+  symbols, text, escaped bytes, binary payloads, and source offsets.
+- 06-July-2026: Reframed the project as a general-purpose RTF parser/renderer with an Outlook
+  MS-OXRTFEX extension, instead of an Outlook-only converter.
+- 06-July-2026: Removed the misleading RFC-compliant converter and moved the classic regex and
+  JEditorPane converters to `org.bbottema.rtftohtml.legacy`.
+- 06-July-2026: Added standards and architecture notes in
+  [docs/rtf-architecture-and-standards.md](docs/rtf-architecture-and-standards.md).
+- 06-July-2026: Expanded coverage for parser edge cases, standard rendering, Outlook encapsulation,
+  image extraction, charset handling, Unicode fallback, byte input, and public API invariants.
 
 
 v1.1.0 - v1.1.1

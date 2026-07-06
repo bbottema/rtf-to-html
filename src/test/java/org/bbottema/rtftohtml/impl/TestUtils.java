@@ -8,7 +8,7 @@ import static java.util.Objects.requireNonNull;
 
 public class TestUtils {
     public static String classpathFileToString(String classPathFile) {
-        InputStream resourceAsStream = RTF2HTMLConverterClassic.class.getClassLoader().getResourceAsStream(classPathFile);
+        InputStream resourceAsStream = TestUtils.class.getClassLoader().getResourceAsStream(classPathFile);
         return new Scanner(requireNonNull(resourceAsStream), UTF_8.name()).useDelimiter("\\A").next();
     }
 
