@@ -158,9 +158,19 @@ public class OutlookRtfToHtmlConverterTest {
 
 		String html = OutlookRtfToHtmlConverter.INSTANCE.toHtml(rtf);
 
-		assertThat(html).isEqualTo("<html><body><pre style=\"white-space:pre-wrap\">"
+		assertThat(html).isEqualTo("<html><body><div style=\"white-space:pre-wrap\">"
 				+ "&lt;tag attr=\"x\"&gt; &amp; text"
-				+ "</pre></body></html>");
+				+ "</div></body></html>");
+	}
+
+	@Test
+	public void testOutlookFromTextDoesNotUsePreWrapper() {
+		String rtf = "{\\rtf1\\ansi\\ansicpg1252\\fromtext first\\line second}";
+
+		String html = OutlookRtfToHtmlConverter.INSTANCE.toHtml(rtf);
+
+		assertThat(html).isEqualTo("<html><body><div style=\"white-space:pre-wrap\">first\nsecond</div></body></html>");
+		assertThat(html).doesNotContain("<pre");
 	}
 
 	@Test

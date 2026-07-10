@@ -553,9 +553,9 @@ public final class RtfToHtmlEngine {
 				return html.toString();
 			}
 			if (mode == Mode.FROM_TEXT) {
-				return "<html><body><pre style=\"white-space:pre-wrap\">"
+				return "<html><body><div style=\"white-space:pre-wrap\">"
 						+ escapeHtml(plainText.toString())
-						+ "</pre></body></html>";
+						+ "</div></body></html>";
 			}
 			return generic.result();
 		}

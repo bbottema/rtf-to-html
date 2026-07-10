@@ -57,7 +57,8 @@ RtfDocument document = new RtfParser().parse(rtfBytes);
 ```
 
 Outlook `\fromhtml` RTF extracts the original HTML. Outlook `\fromtext` RTF returns escaped HTML using
-a `<pre style="white-space:pre-wrap">` wrapper so plain-text email line breaks survive.
+a `<div style="white-space:pre-wrap">` wrapper so plain-text email line breaks survive without imposing
+browser defaults such as monospace fonts.
 
 See [docs/rtf-architecture-and-standards.md](docs/rtf-architecture-and-standards.md) for the RTF,
 MS-OXRTFEX, parser, and renderer rules used by the converters.
@@ -70,6 +71,9 @@ MS-OXRTFEX, parser, and renderer rules used by the converters.
 
 Unreleased
 
+- 10-July-2026: Fixed Outlook `\fromtext` HTML output to preserve whitespace without a `<pre>` wrapper,
+  preventing browser default monospace styling in downstream renderers such as Simple Java Mail
+  ([simple-java-mail#651](https://github.com/bbottema/simple-java-mail/issues/651)).
 - 06-July-2026: [#15](https://github.com/bbottema/rtf-to-html/issues/15): Published a valid
   JPMS automatic module name, `org.bbottema.rtftohtml`, for `module-info.java` consumers.
 - 06-July-2026: Breaking overhaul: replaced the old `RTF2HTMLConverter` API with `RtfToHtmlConverter`,

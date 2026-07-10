@@ -22,7 +22,9 @@ public class GithubIssueRegressionTest {
 
 		assertThat(html).contains("Hello\nこんにちは\n");
 		assertThat(html).doesNotContain("Microsoft Exchange Server", "converted from text", "BM_BEGIN");
-		assertThat(html).startsWith("<html><body><pre style=\"white-space:pre-wrap\">");
+		assertThat(html).startsWith("<html><body><div style=\"white-space:pre-wrap\">");
+		assertThat(html).endsWith("</div></body></html>");
+		assertThat(html).doesNotContain("<pre");
 	}
 
 	@Test
@@ -101,7 +103,7 @@ public class GithubIssueRegressionTest {
 
 		String html = OutlookRtfToHtmlConverter.INSTANCE.toHtml(rtf);
 
-		assertThat(html).isEqualTo("<html><body><pre style=\"white-space:pre-wrap\">"
+		assertThat(html).isEqualTo("<html><body><div style=\"white-space:pre-wrap\">"
 				+ "Hello there\n"
 				+ "\n"
 				+ "This is a plain text email. I'd like to keep \n"
@@ -110,7 +112,7 @@ public class GithubIssueRegressionTest {
 				+ "\n"
 				+ "All the best\n"
 				+ "Andy\n"
-				+ "</pre></body></html>");
+				+ "</div></body></html>");
 	}
 
 	@Test

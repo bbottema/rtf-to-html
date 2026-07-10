@@ -70,9 +70,15 @@ For `\fromhtmlN`, the Outlook converter extracts the original HTML:
   text are skipped.
 
 For `\fromtext`, the converter extracts visible text, escapes it, and returns HTML using a
-`<pre style="white-space:pre-wrap">` wrapper. That keeps Outlook plain-text email layout intact.
+`<div style="white-space:pre-wrap">` wrapper. That keeps Outlook plain-text email layout intact without
+triggering browser defaults such as monospace fonts or default `pre` margins.
 
 If neither Outlook marker is present, `OutlookRtfToHtmlConverter` falls back to the standard renderer.
+
+Future investigation: the converter currently returns only HTML. If downstream libraries need inspection
+metadata, consider exposing conversion source information such as original Outlook HTML, Outlook plain
+text wrapped as HTML, or generic RTF rendering. Do not make downstream callers choose low-level parser
+or renderer behavior just to get the normal best-effort conversion result.
 
 ## Legacy Converters
 
@@ -90,6 +96,7 @@ They are kept as historical reference implementations, not as the recommended co
 - #4: `\qc` and `\qr` render paragraph alignment in generic RTF.
 - #5: `\pict` groups are parsed and exposed to an image callback.
 - #6: Outlook `\fromtext` returns safe HTML preserving plain-text line breaks.
+- simple-java-mail#651: Outlook `\fromtext` preserves whitespace without browser-default `pre` styling.
 - #7: `\line` is preserved during Outlook HTML extraction.
 - #9 and #13: charset detection uses `\ansicpg` plus font-table overrides.
 - #14: `\pntext` is skipped so browser-rendered lists do not get duplicate numbers.
