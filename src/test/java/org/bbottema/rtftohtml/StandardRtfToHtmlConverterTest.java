@@ -121,6 +121,24 @@ public class StandardRtfToHtmlConverterTest {
 	}
 
 	@Test
+	public void testIssue18DecodesEscapedBytesUsingRtfFontCharset() {
+		assertFontCharsetDecodes(163, "d0", "Đ");
+		assertFontCharsetDecodes(186, "c0", "Ą");
+		assertFontCharsetDecodes(222, "c0", "ภ");
+		assertFontCharsetDecodes(238, "a5", "Ą");
+	}
+
+	private static void assertFontCharsetDecodes(int rtfCharset, String escapedByte, String expectedText) {
+		String html = StandardRtfToHtmlConverter.INSTANCE.toHtml("{\\rtf1\\ansi\\ansicpg1252"
+				+ "{\\fonttbl{\\f0\\fswiss\\fcharset" + rtfCharset + " Arial;}}"
+				+ "\\f0 \\'" + escapedByte + "}");
+
+		assertThat(html)
+				.as("RTF font charset %s", rtfCharset)
+				.isEqualTo("<html><body><p>" + expectedText + "</p></body></html>");
+	}
+
+	@Test
 	public void testByteInputPreservesRawBytesUntilCodePageDecoding() {
 		byte[] prefix = "{\\rtf1\\ansi\\ansicpg1252 caf".getBytes(StandardCharsets.ISO_8859_1);
 		byte[] suffix = "}".getBytes(StandardCharsets.ISO_8859_1);

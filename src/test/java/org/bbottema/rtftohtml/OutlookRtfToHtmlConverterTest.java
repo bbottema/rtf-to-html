@@ -236,6 +236,17 @@ public class OutlookRtfToHtmlConverterTest {
 	}
 
 	@Test
+	public void testIssue18UsesFontCharsetInsteadOfDocumentCodePage() {
+		String rtf = "{\\rtf1\\ansi\\ansicpg1252\\fromtext"
+				+ "{\\fonttbl{\\f0\\fswiss\\fcharset186 Arial;}}"
+				+ "\\f0 \\'c0}";
+
+		String html = OutlookRtfToHtmlConverter.INSTANCE.toHtml(rtf);
+
+		assertThat(html).contains("Ą");
+	}
+
+	@Test
 	public void testUnicodeFallbackCharactersAreSkipped() {
 		String rtf = "{\\rtf1\\ansi\\ansicpg1252\\fromtext\\uc1 Unicode \\u945 ? done}";
 

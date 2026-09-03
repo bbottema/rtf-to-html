@@ -13,14 +13,13 @@ This library started life inside
 turning Outlook/Exchange RTF body content into usable HTML. The core is now a normal RTF parser and
 renderer; Outlook handling is an extension on top of that core.
 
-rtf-to-html is available in Maven Central. The current branch contains unreleased breaking API changes;
-the latest published release is still:
+rtf-to-html is available in Maven Central. The latest published release is:
 
 ```
 <dependency>
     <groupId>com.github.bbottema</groupId>
     <artifactId>rtf-to-html</artifactId>
-    <version>1.1.1</version>
+    <version>2.0.3</version>
 </dependency>
 ```
 
@@ -69,24 +68,26 @@ MS-OXRTFEX, parser, and renderer rules used by the converters.
 
 ### Latest Progress ###
 
-Unreleased
+v2.0.0 - v2.0.3
 
-- 10-July-2026: Fixed Outlook `\fromtext` HTML output to preserve whitespace without a `<pre>` wrapper,
+- 03-September-2026: **v2.0.3:** [#18](https://github.com/bbottema/rtf-to-html/issues/18):
+  Corrected Baltic, Central European, Vietnamese, and Thai font charset decoding without API changes.
+- 10-July-2026: **v2.0.2:** Fixed Outlook `\fromtext` HTML output to preserve whitespace without a `<pre>` wrapper,
   preventing browser default monospace styling in downstream renderers such as Simple Java Mail
   ([simple-java-mail#651](https://github.com/bbottema/simple-java-mail/issues/651)).
-- 06-July-2026: [#15](https://github.com/bbottema/rtf-to-html/issues/15): Published a valid
+- 06-July-2026: **v2.0.1:** [#15](https://github.com/bbottema/rtf-to-html/issues/15): Published a valid
   JPMS automatic module name, `org.bbottema.rtftohtml`, for `module-info.java` consumers.
-- 06-July-2026: Breaking overhaul: replaced the old `RTF2HTMLConverter` API with `RtfToHtmlConverter`,
+- 06-July-2026: **v2.0.0:** Breaking overhaul: replaced the old `RTF2HTMLConverter` API with `RtfToHtmlConverter`,
   `StandardRtfToHtmlConverter`, and `OutlookRtfToHtmlConverter`.
-- 06-July-2026: Added a public `RtfParser` and document model for groups, control words, control
+- 06-July-2026: **v2.0.0:** Added a public `RtfParser` and document model for groups, control words, control
   symbols, text, escaped bytes, binary payloads, and source offsets.
-- 06-July-2026: Reframed the project as a general-purpose RTF parser/renderer with an Outlook
+- 06-July-2026: **v2.0.0:** Reframed the project as a general-purpose RTF parser/renderer with an Outlook
   MS-OXRTFEX extension, instead of an Outlook-only converter.
-- 06-July-2026: Removed the misleading RFC-compliant converter and moved the classic regex and
+- 06-July-2026: **v2.0.0:** Removed the misleading RFC-compliant converter and moved the classic regex and
   JEditorPane converters to `org.bbottema.rtftohtml.legacy`.
-- 06-July-2026: Added standards and architecture notes in
+- 06-July-2026: **v2.0.0:** Added standards and architecture notes in
   [docs/rtf-architecture-and-standards.md](docs/rtf-architecture-and-standards.md).
-- 06-July-2026: Expanded coverage for parser edge cases, standard rendering, Outlook encapsulation,
+- 06-July-2026: **v2.0.0:** Expanded coverage for parser edge cases, standard rendering, Outlook encapsulation,
   image extraction, charset handling, Unicode fallback, byte input, and public API invariants.
 
 

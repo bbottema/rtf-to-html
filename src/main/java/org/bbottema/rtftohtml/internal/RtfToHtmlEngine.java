@@ -246,7 +246,7 @@ public final class RtfToHtmlEngine {
 				conversion.fontTable.put(parameter, state.fontEntry);
 			}
 		} else if ("fcharset".equals(word) && parameter != null && state.fontEntry != null) {
-			state.fontEntry.charset = CodePage.getCharsetByCodePage(parameter);
+			state.fontEntry.charset = RtfCharset.find(parameter);
 		} else if ("cpg".equals(word) && parameter != null && state.fontEntry != null) {
 			state.fontEntry.charset = findCharsetForCodePage(parameter, state.fontEntry.charset);
 		}

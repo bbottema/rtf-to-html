@@ -4,6 +4,18 @@ https://github.com/bbottema/rtf-to-html
 RELEASE NOTES rtf-to-html
 
 
+v2.0.0 - v2.0.3
+
+- 03-September-2026: v2.0.3: [#18](https://github.com/bbottema/rtf-to-html/issues/18): Corrected Baltic, Central European, Vietnamese, and Thai font charset decoding without API changes.
+- 10-July-2026: v2.0.2: Fixed Outlook \fromtext HTML output to preserve whitespace without a <pre> wrapper, preventing browser default monospace styling in downstream renderers such as Simple Java Mail ([simple-java-mail#651](https://github.com/bbottema/simple-java-mail/issues/651)).
+- 06-July-2026: v2.0.1: [#15](https://github.com/bbottema/rtf-to-html/issues/15): Published a valid JPMS automatic module name, org.bbottema.rtftohtml, for module-info.java consumers.
+- 06-July-2026: v2.0.0: Replaced the old RTF2HTMLConverter API with RtfToHtmlConverter, StandardRtfToHtmlConverter, and OutlookRtfToHtmlConverter.
+- 06-July-2026: v2.0.0: Added a public RtfParser and document model for groups, control words, control symbols, text, escaped bytes, binary payloads, and source offsets.
+- 06-July-2026: v2.0.0: Reframed the project as a general-purpose RTF parser and renderer with an Outlook MS-OXRTFEX extension.
+- 06-July-2026: v2.0.0: Moved the classic regex and JEditorPane converters to org.bbottema.rtftohtml.legacy.
+- 06-July-2026: v2.0.0: Added RTF standards and architecture documentation and expanded parser, renderer, image, charset, Unicode, byte-input, and public-API coverage.
+
+
 v1.1.0 - v1.1.1
 
 - 08-June-2024: #14: Bullet numbers in list items have double numbers
